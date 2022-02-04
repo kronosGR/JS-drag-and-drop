@@ -3,7 +3,7 @@
 * HTML
 * CSS
 * Javascript
-* 
+* Custom Scrollbar
 
 
 ## Live site
