@@ -58,7 +58,7 @@ function createItemEl(columnEl, column, item, index) {
   listEl.classList.add('drag-item');
   listEl.textContent = item;
   listEl.draggable = true;
-  listEl.setAttribute('ondragstart', 'drag(event)')
+  listEl.setAttribute('ondragstart', 'drag(event)');
 
   columnEl.appendChild(listEl);
 }
@@ -95,29 +95,53 @@ function updateDOM() {
   });
 
   // Run getSavedColumns only once, Update Local Storage
+  updatedOnLoad = true;
+  updateSavedColumns();
 }
 
-function drag(e){
+function rebuildArrays() {
+  backlogListArray = [];
+  progressListArray = [];
+  completeListArray = [];
+  onHoldListArray = [];
+  for (let i=0; i<backlogList.children.length; i++){
+    backlogListArray.push(backlogList.children[i].textContent)
+  }
+  for (let i=0; i<progressList.children.length; i++){
+    progressListArray.push(progressList.children[i].textContent)
+  }
+  for (let i=0; i<completeList.children.length; i++){
+    completeListArray.push(completeList.children[i].textContent)
+  }
+  for (let i=0; i<onHoldList.children.length; i++){
+    onHoldListArray.push(onHoldList.children[i].textContent)
+  }
+
+  updateDOM();
+}
+
+function drag(e) {
   draggedItem = e.target;
 }
 
-function dragEnter(column){
-  listColumns[column].classList.add('over')
-  currentColumn = column
+function dragEnter(column) {
+  listColumns[column].classList.add('over');
+  currentColumn = column;
 }
 
-function allowDrop(e){
-  e.preventDefault()
+function allowDrop(e) {
+  e.preventDefault();
 }
 
-function drop(e){
-  e.preventDefault()
-  listColumns.forEach((column)=> {
-    column.classList.remove('over')
-  })
+function drop(e) {
+  e.preventDefault();
+  listColumns.forEach((column) => {
+    column.classList.remove('over');
+  });
   const parent = listColumns[currentColumn];
-  parent.appendChild(draggedItem)
+  parent.appendChild(draggedItem);
 
+  rebuildArrays();
 }
 
 updateDOM();
